@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Andrew Nguyen | Data Engineer</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0e0e0e;
+      color: white;
+      overflow: hidden;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .hero {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      backdrop-filter: blur(8px);
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    .hero h2 {
+      font-weight: 400;
+      font-size: 1.5rem;
+      margin-bottom: 30px;
+      color: #ccc;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid #fff;
+      color: white;
+      padding: 12px 24px;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background: white;
+      color: #0e0e0e;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="flowCanvas"></canvas>
+
+<div class="hero">
+  <h1>Andrew Nguyen</h1>
+  <h2>Data Engineer | Cloud Enthusiast | Problem Solver</h2>
+  <div class="buttons">
+    <a href="about.html" class="btn">About Me</a>
+    <a href="resume.pdf" class="btn" target="_blank">View Resume</a>
+    <a href="mothersday.html" class="btn">Happy Mothers Day
+      
+    </a>
+    <a href="mailto:andrew.nguyen@email.com" class="btn">Contact</a>
+  </div>
+</div>
+
+<script>
+  const canvas = document.getElementById('flowCanvas');
+  const ctx = canvas.getContext('2d');
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  const lines = [];
+
+  for (let i = 0; i < 25; i++) {
+    lines.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      speed: 1 + Math.random() * 2,
+      amplitude: 20 + Math.random() * 30,
+      frequency: 0.01 + Math.random() * 0.02,
+      offset: Math.random() * 100,
+      color: `hsl(${200 + Math.random() * 50}, 100%, 70%)`,
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    lines.forEach((line, index) => {
+      ctx.beginPath();
+      ctx.moveTo(line.x, line.y);
+
+      for (let i = 0; i < canvas.width; i += 10) {
+        const yOffset = Math.sin((i + line.offset) * line.frequency) * line.amplitude;
+        ctx.lineTo(i, line.y + yOffset);
+      }
+
+      ctx.strokeStyle = line.color;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      line.y += line.speed;
+      if (line.y > canvas.height) {
+        line.y = -50;
+        line.x = Math.random() * canvas.width;
+        line.amplitude = 20 + Math.random() * 30;
+      }
+
+      line.offset += 1;
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+</script>
+
+</body>
+</html>
